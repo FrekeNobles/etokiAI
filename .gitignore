@@ -1,0 +1,3 @@
+proxy-server/node_modules
+proxy-server/.env
+.DS_Store
