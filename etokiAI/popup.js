@@ -42,31 +42,20 @@ document.addEventListener("DOMContentLoaded", async () => {
     summaryLayout.classList.add("hidden");
   }
 
-  function renderStructuredSummary(text) {
-    const words = text.trim().split(/\s+/).filter(Boolean).length;
-    const readingMinutes = Math.max(1, Math.ceil(words / 200));
-
-    wordCount.textContent = `${words} words`;
-
-    const sentences = text
-      .split(".")
-      .map((s) => s.trim())
-      .filter(Boolean);
-
-    const summaryLimit = threePoints.checked ? 3 : 4;
-
-    const summaryPoints = sentences.slice(0, summaryLimit);
-    const insightPoints = sentences.slice(summaryLimit, summaryLimit + 3);
-
-    summarySection.innerHTML = summaryPoints
-      .map((point) => `<li>${point}.</li>`)
+  function renderSummary(data) {
+    summarySection.innerHTML = (data.summary || [])
+      .map((item) => `<li>${item}</li>`)
       .join("");
 
-    insightsSection.innerHTML = insightPoints
-      .map((point) => `<li>${point}.</li>`)
+    insightsSection.innerHTML = (data.insights || [])
+      .map((item) => `<li>${item}</li>`)
       .join("");
 
-    readingTime.textContent = `${readingMinutes} min read`;
+    readingTime.textContent = data.readingTime || "";
+
+    const wordTotal = (data.summary || []).join(" ").split(/\s+/).length;
+
+    wordCount.textContent = `${wordTotal} words`;
 
     summaryLayout.classList.remove("hidden");
   }
@@ -76,19 +65,37 @@ document.addEventListener("DOMContentLoaded", async () => {
     clearSummary();
     setLoading(true);
 
-    status.textContent = "Summarizing page...";
+    status.textContent = "Extracting page content...";
 
     try {
-      const response = await chrome.tabs.sendMessage(tab.id, {
+      const extraction = await chrome.tabs.sendMessage(tab.id, {
         type: "EXTRACT_PAGE_CONTENT"
       });
 
-      if (!response?.success || !response.content) {
-        throw new Error("No meaningful content found.");
+      if (!extraction?.success || !extraction.content) {
+        throw new Error("Could not extract page content");
       }
 
-      renderStructuredSummary(response.content);
-      status.textContent = "Done";
+      status.textContent = "Summarizing page...";
+
+      const mode = threePoints.checked ? "3-bullets" : "default";
+
+      const response = await chrome.runtime.sendMessage({
+        type: "SUMMARIZE_PAGE",
+        url: extraction.url,
+        content: extraction.content,
+        mode
+      });
+
+      if (!response?.success) {
+        throw new Error(response?.error || "Summarization failed");
+      }
+
+      renderSummary(response.data);
+
+      status.textContent = response.cached
+        ? "Loaded from cache"
+        : "Summary generated";
     } catch (error) {
       setError(error.message || "Something went wrong.");
     } finally {
@@ -107,11 +114,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     const insightsText = insightsSection.innerText;
     const reading = readingTime.textContent;
 
-    const text = `Summary:\n${summaryText}\n\nKey Insights:\n${insightsText}\n\nEstimated Reading Time:\n${reading}`;
-
     if (!summaryText.trim()) return;
 
+    const text = `Summary:\n${summaryText}\n\nKey Insights:\n${insightsText}\n\nEstimated Reading Time:\n${reading}`;
+
     await navigator.clipboard.writeText(text);
+
     status.textContent = "Summary copied";
   });
 });
