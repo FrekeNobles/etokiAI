@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>etokiAI</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <main class="container">
+    <header class="header">
+      <h1>etokiAI</h1>
+      <p id="page-title">No page selected</p>
+    </header>
+
+    <section class="controls">
+      <label class="checkbox-row">
+        <input type="checkbox" id="three-points" />
+        Summarize in 3 bullet points
+      </label>
+
+      <button id="summarize-btn">Summarize Page</button>
+    </section>
+
+    <div id="status" class="status" aria-live="polite"></div>
+
+    <div id="spinner" class="spinner hidden" aria-hidden="true"></div>
+
+    <section class="summary-wrapper">
+      <div class="summary-meta">
+        <span id="word-count"></span>
+
+        <div class="summary-actions">
+          <button id="copy-btn" class="small-btn">Copy</button>
+          <button id="clear-btn" class="small-btn">Clear</button>
+        </div>
+      </div>
+
+      <section id="summary-layout" class="summary-layout hidden">
+        <div class="summary-block">
+          <h2>Summary</h2>
+          <ul id="summary-section"></ul>
+        </div>
+
+        <div class="summary-block">
+          <h2>Key Insights</h2>
+          <ul id="insights-section"></ul>
+        </div>
+
+        <div class="summary-block">
+          <h2>Estimated Reading Time</h2>
+          <p id="reading-time"></p>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <script src="popup.js"></script>
+</body>
+</html>
