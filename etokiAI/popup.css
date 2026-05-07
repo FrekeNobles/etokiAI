@@ -6,8 +6,8 @@ body {
   margin: 0;
   width: 380px;
   font-family: Arial, sans-serif;
-  background: #ffffff;
-  color: #111111;
+  background: #0f172a;
+  color: #e2e8f0;
 }
 
 .container {
@@ -17,17 +17,21 @@ body {
 .header h1 {
   margin: 0;
   font-size: 18px;
+  color: #f8fafc;
 }
 
 #page-title {
   margin-top: 6px;
   font-size: 12px;
-  color: #555;
+  color: #94a3b8;
   word-break: break-word;
 }
 
 .controls {
   margin-top: 14px;
+  background: #1e293b;
+  padding: 12px;
+  border-radius: 10px;
 }
 
 .checkbox-row {
@@ -36,41 +40,56 @@ body {
   align-items: center;
   font-size: 13px;
   margin-bottom: 10px;
+  color: #cbd5e1;
 }
 
 button {
   border: none;
   cursor: pointer;
   font-size: 13px;
+  border-radius: 8px;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
 }
 
 button:focus-visible,
 input:focus-visible {
-  outline: 2px solid black;
+  outline: 2px solid #38bdf8;
   outline-offset: 2px;
 }
 
 #summarize-btn {
   width: 100%;
-  padding: 10px;
+  padding: 11px;
+  background: #2563eb;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+#summarize-btn:hover {
+  background: #1d4ed8;
 }
 
 .status {
   margin-top: 10px;
   min-height: 18px;
   font-size: 12px;
+  color: #cbd5e1;
 }
 
 .status.error {
-  color: #b00020;
+  color: #f87171;
 }
 
 .spinner {
   width: 18px;
   height: 18px;
   margin-top: 8px;
-  border: 2px solid #ddd;
-  border-top-color: #111;
+  border: 2px solid #334155;
+  border-top-color: #38bdf8;
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
 }
@@ -95,6 +114,7 @@ input:focus-visible {
   align-items: center;
   margin-bottom: 8px;
   font-size: 12px;
+  color: #94a3b8;
 }
 
 .summary-actions {
@@ -103,14 +123,22 @@ input:focus-visible {
 }
 
 .small-btn {
-  padding: 5px 8px;
+  padding: 6px 10px;
+  background: #334155;
+  color: #e2e8f0;
+}
+
+.small-btn:hover {
+  background: #475569;
 }
 
 .summary-layout {
   max-height: 280px;
   overflow-y: auto;
-  border: 1px solid #ddd;
-  padding: 10px;
+  border: 1px solid #334155;
+  background: #1e293b;
+  border-radius: 10px;
+  padding: 12px;
 }
 
 .summary-block + .summary-block {
@@ -120,12 +148,14 @@ input:focus-visible {
 .summary-block h2 {
   margin: 0 0 8px;
   font-size: 13px;
+  color: #f8fafc;
 }
 
 .summary-block p,
 .summary-block li {
   font-size: 13px;
   line-height: 1.6;
+  color: #cbd5e1;
 }
 
 #summary-section,
