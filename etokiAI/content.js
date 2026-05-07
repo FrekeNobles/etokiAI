@@ -51,6 +51,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       sendResponse({
         success: true,
         title: document.title,
+        content: document.body.innerText,
         url: window.location.href,
         content
       });
